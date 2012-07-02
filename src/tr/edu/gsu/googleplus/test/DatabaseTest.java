@@ -100,7 +100,7 @@ public class DatabaseTest
 		
 //		testRecover();
 		
-		testReform();
+//		testReform();
 	}
 	
 	/**
@@ -151,44 +151,25 @@ public class DatabaseTest
 		DbTools.openDb(false);
 		
 		// create the empty tables
-//		DbTools.createTables();
+		DbTools.createTables();
 		// alternatively: reset them, if they exist
 //	    DbTools.resetTables();
 		
 	    // insert data
-//	    DbTools.insertDummyData();
+	    DbTools.insertDummyData();
 	    
 	    // display tables content
-//	    DbTools.displayData();
+	    DbTools.displayData();
 	
-if(false)		
-{	String query = 	"DROP TABLE RELATIONSHIP";
-	Statement statement = DbTools.connection.createStatement();
-	statement.execute(query);
-	statement.close();
-	
-	logger.log("create new RELATIONSHIP table");
-	query =	"CREATE TABLE RELATIONSHIP (";
-	query = query + 	"SOURCE_ID INTEGER NOT NULL,";
-	query = query + 	"TARGET_ID INTEGER NOT NULL,";
-	query = query + 	"DATE_RETRIEVED DATE NOT NULL,";
-	query = query + 	"PRIMARY KEY (SOURCE_ID, TARGET_ID),";
-	query = query + 	"FOREIGN KEY(SOURCE_ID) REFERENCES PERSON(ID),";
-	query = query + 	"FOREIGN KEY(TARGET_ID) REFERENCES PERSON(ID)";
-	query = query + ")";
-	statement = DbTools.connection.createStatement();
-	statement.execute(query);
-	statement.close();
-}		
 		// reform DB
 		DbTools.reformDb();
 
-//		for(int i=0;i<5;i++)
-//			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		for(int i=0;i<5;i++)
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		
 	    // export tables content
-//	    DbTools.exportReformedPersonsAsNodelist();
-//	    DbTools.exportReformedRelationshipsAsEdgelist();
+	    DbTools.exportReformedPersonsAsNodelist();
+	    DbTools.exportReformedRelationshipsAsEdgelist();
 		
 		// close the database
 		DbTools.closeDb();
