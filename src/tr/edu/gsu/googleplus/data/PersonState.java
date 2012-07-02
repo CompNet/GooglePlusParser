@@ -22,10 +22,9 @@ package tr.edu.gsu.googleplus.data;
  */
 
 /**
- * Represents a Google+ user.
- * The class is not really complete,
- * in the sense many fields available
- * on the website are still missing.
+ * Represents the state of a Google+ user.
+ * It is used internally to know if some Person
+ * present in the DB has already been processed.
  * 
  * @since 1
  * @version 1

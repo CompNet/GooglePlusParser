@@ -41,7 +41,6 @@ import com.sun.jersey.api.client.filter.ClientFilter;
  * @since 1
  * @version 1
  * @author Jason Grey
- *
  */
 public class GoogleJSONFilter extends ClientFilter
 {
