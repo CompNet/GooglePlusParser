@@ -88,9 +88,9 @@ as a post-processing. The program still retrieves and store strings.
 
 This product uses open source softwares:
   + H2 - Java SAL Database
-  	http://www.h2database.com
-	Mozilla Public License
-	Used to store the data retrived from Google+
+    http://www.h2database.com
+    Mozilla Public License
+    Used to store the data retrived from Google+
 	
   + Jersey (Sun/Oracle implementation of JAX-RS - Java API for RESTful Web Services)
     http://jersey.java.net/
@@ -98,22 +98,22 @@ This product uses open source softwares:
     Used to query the Google+ service
     
   + Jettison - JSON StAX Implementation
-  	http://jettison.codehaus.org/
-  	Apache License v2 
+    http://jettison.codehaus.org/
+    Apache License v2 
     Used to handle the JSON objects
     
   + Log4j
-  	http://logging.apache.org/log4j
-  	Apache License v2 
-  	Used to log the program activity
+    http://logging.apache.org/log4j
+    Apache License v2 
+    Used to log the program activity
   	
   + Some ideas from these blogs
-	Paul Anthony: http://blog.webdistortion.com/2011/06/12/google-people-search-how-big-is-googles-social-network/
-	NgocChinh: http://www.blackhatworld.com/blackhat-seo/black-hat-seo/315777-list-google-profiles-do-what-you-want.html
-	Used to obtain all the Google+ ids
+    Paul Anthony: http://blog.webdistortion.com/2011/06/12/google-people-search-how-big-is-googles-social-network/
+    NgocChinh: http://www.blackhatworld.com/blackhat-seo/black-hat-seo/315777-list-google-profiles-do-what-you-want.html
+    Used to obtain all the Google+ ids
 
   + Some source code from Jason Grey in the following classes:
-  	 GoogleJSONFilter
-  	 GooglePlusParser
-  	https://plus.google.com/114074126238467553553/posts
-  	(A G+ post, incidentally!)  
+    GoogleJSONFilter
+    GooglePlusParser
+    https://plus.google.com/114074126238467553553/posts
+    (A G+ post, incidentally!)  
