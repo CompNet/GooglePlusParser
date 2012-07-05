@@ -1,4 +1,4 @@
-package tr.edu.gsu.googleplus.tool;
+package tr.edu.gsu.googleplus.postprocess;
 
 /*
  * Google+ Network Extractor
@@ -50,7 +50,7 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
  * @version 1
  * @author Vincent Labatut
  */
-public class ConversionTools
+public class IdConverter
 {	/*** Number of Persons to be processed */
 	private static final int ID_NBR = 80080893;
 	
@@ -94,7 +94,7 @@ public class ConversionTools
 	// FILES			/////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////
 	/** Folder containing all files */
-	private static final String FOLDER = ".." + File.separator + "Database" + File.separator + "googleplus" + File.separator + "networks";
+	private static final String FOLDER = ".." + File.separator + "Database" + File.separator + "googleplus";
 	/** Stem of the files containing the original relationships */
 	private static final String RELATIONSHIPS_NAME = FOLDER + File.separator + "googleplus.";
 	/** Extension of the files containing the original relationships */
@@ -151,7 +151,7 @@ public class ConversionTools
 				Integer value = Integer.parseInt(parts[1]);
 				fullMap.put(key,value);
 				if(count%1000000 == 0)
-					logger.log("progress: "+count+"/"+ID_NBR);
+					logger.log("Progress: "+count+"/"+ID_NBR);
 			}
 		}	
 		logger.decreaseOffset();

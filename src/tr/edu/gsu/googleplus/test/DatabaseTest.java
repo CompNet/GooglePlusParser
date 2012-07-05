@@ -31,6 +31,7 @@ import org.h2.tools.Recover;
 
 import tr.edu.gsu.googleplus.data.Person;
 import tr.edu.gsu.googleplus.data.Relationship;
+import tr.edu.gsu.googleplus.postprocess.DbReformer;
 import tr.edu.gsu.googleplus.tool.DbTools;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLogger;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
@@ -162,14 +163,14 @@ public class DatabaseTest
 	    DbTools.displayData();
 	
 		// reform DB
-		DbTools.reformDb();
+		DbReformer.reformDb();
 
 		for(int i=0;i<5;i++)
 			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		
 	    // export tables content
-	    DbTools.exportReformedPersonsAsNodelist();
-	    DbTools.exportReformedRelationshipsAsEdgelist();
+		DbReformer.exportReformedPersonsAsNodelist();
+		DbReformer.exportReformedRelationshipsAsEdgelist();
 		
 		// close the database
 		DbTools.closeDb();
