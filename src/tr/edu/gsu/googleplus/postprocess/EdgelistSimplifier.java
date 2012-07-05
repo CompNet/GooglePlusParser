@@ -46,7 +46,7 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
  */
 public class EdgelistSimplifier
 {	/*** Number of Persons to be processed */
-	private static final int NODE_NBR = 80080893;
+	private static final int NODE_NBR = 31148138;
 	/*** Number of links to be processed */
 	private static final int LINK_NBR = 473106758;
 	
@@ -113,7 +113,7 @@ public class EdgelistSimplifier
 			{	String parts[] = line.split("\\t");
 				int id1 = Integer.parseInt(parts[0]);
 				int id2 = Integer.parseInt(parts[1]);
-System.out.println(line);				
+//System.out.println(line);				
 				degrees[id1]++;
 				degrees[id2]++;
 				if(count%1000000 == 0)

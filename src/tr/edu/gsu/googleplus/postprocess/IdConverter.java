@@ -44,7 +44,7 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
  * into a more convenient int-based set of files.<br/>
  * 
  * -Xms16g -Xmx16g -XX:+UseConcMarkSweepGC
- * cat edges.*.table > edges.table 
+ * cat edges.*.table > edges.table
  *  
  * @since 1
  * @version 1
