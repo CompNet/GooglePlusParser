@@ -3,7 +3,7 @@ Google+ Network Extractor - version 1
 
 -----------------------------------------------------------------------
 
-Copyright 2011 Vincent Labatut
+Copyright 2011-2012 Vincent Labatut
 http:\\vincentlabatut.org
 vincent.labatut@free.fr
 

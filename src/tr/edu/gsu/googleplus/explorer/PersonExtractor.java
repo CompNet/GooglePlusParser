@@ -2,7 +2,7 @@ package tr.edu.gsu.googleplus.explorer;
 
 /*
  * Google+ Network Extractor
- * Copyright 2011 Vincent Labatut 
+ * Copyright 2011-2012 Vincent Labatut 
  * 
  * This file is part of Google+ Network Extractor.
  * 
