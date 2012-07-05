@@ -52,7 +52,8 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
  */
 public class IdConverter
 {	/*** Number of Persons to be processed */
-	private static final int ID_NBR = 80080893;
+//	private static final int ID_NBR = 80080893; // raw number, including isolates
+	private static final int ID_NBR = 31148138;
 	
 	/**
 	 * Starts the conversion, using some files exported from the DB.
@@ -146,8 +147,9 @@ public class IdConverter
 		{	count++;
 			String line = scanner.nextLine();
 			if(!line.isEmpty())
-			{	String parts[] = line.split(" ");
-				String key = parts[0].substring(1,parts[0].length()-1);
+			{	String parts[] = line.split("\\t");
+//				String key = parts[0].substring(1,parts[0].length()-1); // for the old table format which included ""
+				String key = parts[0];
 				Integer value = Integer.parseInt(parts[1]);
 				fullMap.put(key,value);
 				if(count%1000000 == 0)
@@ -302,6 +304,7 @@ public class IdConverter
 				
 				// close the files
 				scanner.close();
+				writer.println();
 				writer.close();
 				logger.log("Done with file number "+nbr+"/"+77);
 			}

@@ -114,8 +114,8 @@ public class EdgelistSimplifier
 				int id1 = Integer.parseInt(parts[0]);
 				int id2 = Integer.parseInt(parts[1]);
 System.out.println(line);				
-				degrees[id1-1]++;
-				degrees[id2-1]++;
+				degrees[id1]++;
+				degrees[id2]++;
 				if(count%1000000 == 0)
 					logger.log("Progress: "+count+"/"+LINK_NBR);
 			}
@@ -154,7 +154,7 @@ System.out.println(line);
 			{	String parts[] = line.split("\\t");
 				int id1 = Integer.parseInt(parts[0]);
 				int id2 = Integer.parseInt(parts[1]);
-				if(degrees[id1-1]>1 && degrees[id2-1]>1)
+				if(degrees[id1]>1 && degrees[id2]>1)
 				writer.println(id1 + "\t" + id2);
 				if(count%1000000 == 0)
 					logger.log("Progress: "+count+"/"+LINK_NBR);
