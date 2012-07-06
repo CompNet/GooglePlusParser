@@ -36,6 +36,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.sun.jersey.api.client.UniformInterfaceException;
 
+import tr.edu.gsu.googleplus.tool.FileTools;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLogger;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
 
@@ -82,6 +83,11 @@ public class IdConverter
 		// start the threads
 		int threads = 32;
 		processRelationships(threads);
+		
+		// convert file
+//		FileTools.convertIdNumbering("/home/vlabatut/eclipse/workspaces/Extraction/Database/googleplus/edges.noleave.table",
+//				"/home/vlabatut/eclipse/workspaces/Extraction/Database/googleplus/edges.noleave.table.edges");
+		
 		logger.log("Done");
 	}
 	

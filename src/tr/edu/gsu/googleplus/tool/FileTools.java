@@ -22,10 +22,16 @@ package tr.edu.gsu.googleplus.tool;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Scanner;
 
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLogger;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
@@ -95,5 +101,55 @@ public class FileTools
 		logger.log("Done: "+total+" bytes read ("+total/1024+" kB)");
         in.close();
         out.close();
+	}
+	
+	/**
+	 * Re-number an edge list file,
+	 * starting from 1 instead of 0.
+	 * 
+	 * @param input
+	 * 		The file to be converted.
+	 * @param output
+	 * 		The result of the conversion.
+	 * 
+	 * @throws FileNotFoundException
+	 * 		Problem while finding one of the files.
+	 */
+	public static void convertIdNumbering(String input, String output) throws FileNotFoundException
+	{	// open the input file
+		logger.log("Open the input file");
+		FileInputStream file = new FileInputStream(input);
+		InputStreamReader reader = new InputStreamReader(file);
+		Scanner scanner = new Scanner(reader);
+		
+		// open the output file
+		logger.log("Open the output file");
+		FileOutputStream fileOut = new FileOutputStream(output);
+		OutputStreamWriter osw = new OutputStreamWriter(fileOut);
+		PrintWriter writer = new PrintWriter(osw);
+		
+		// convert the ids by adding 1 to them
+		// so that the numnering starts from 1 instead of 0
+		logger.increaseOffset();
+		int count = 0;
+		while(scanner.hasNextLine())
+		{	count++;
+			String line = scanner.nextLine();
+			if(!line.isEmpty())
+			{	String parts[] = line.split("\\t");
+				int id1 = Integer.parseInt(parts[0]) + 1;
+				int id2 = Integer.parseInt(parts[1]) + 1;
+				writer.println(id1 + "\t" + id2);
+				if(count%1000000 == 0)
+					logger.log("Progress: "+count);
+			}
+		}
+		logger.decreaseOffset();
+		
+		// close everything
+		logger.log("Close both files");
+		scanner.close();
+		writer.println();
+		writer.close();
 	}
 }
