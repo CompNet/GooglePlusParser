@@ -95,3 +95,4 @@ if(length(which(temp==algo.name))==0)
 write.table(x=com.table,file=com.file)
 
 
+# ./oslom_dir -f ~/eclipse/workspaces/Extraction/Database/googleplus/edges.table -uw -r 1 -hr 0 -cp 0.5

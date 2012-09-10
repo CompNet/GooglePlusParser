@@ -50,6 +50,15 @@ public class EdgelistSimplifier
 	/*** Number of links to be processed */
 	private static final int LINK_NBR = 473106758;
 	
+	/**
+	 * Start the simplification of the network
+	 * 
+	 * @param args
+	 * 		Not used.
+	 * 
+	 * @throws FileNotFoundException
+	 * 		Problem while accessing one of the files. 
+	 */
 	public static void main(String[] args) throws FileNotFoundException
 	{	// init log
 		logger.setName("Conversion");
@@ -87,8 +96,16 @@ public class EdgelistSimplifier
 	/////////////////////////////////////////////////////////////////
 	// PROCESS			/////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////
+	/** The degrees of the network nodes */
 	private static int degrees[] = new int[NODE_NBR];
 	
+	/**
+	 * Parse the file to get the degree
+	 * of each node.
+	 * 
+	 * @throws FileNotFoundException
+	 * 		Problem while accessing the input file.
+	 */
 	private static void processDegrees() throws FileNotFoundException
 	{	logger.increaseOffset();
 		
@@ -127,6 +144,14 @@ public class EdgelistSimplifier
 		logger.decreaseOffset();
 	}
 	
+	/**
+	 * Parse the network file another time,
+	 * this time copying only the links involving
+	 * both selected nodes (no leaves).
+	 * 
+	 * @throws FileNotFoundException
+	 * 		Problem while accessing the input and/or output files.
+	 */
 	private static void filterRelationships() throws FileNotFoundException
 	{	logger.increaseOffset();
 	
@@ -169,6 +194,12 @@ public class EdgelistSimplifier
 		logger.decreaseOffset();
 	}
 	
+	/**
+	 * Record the degrees in a separate file
+	 * 
+	 * @throws FileNotFoundException
+	 * 		Problem while accessing the output file.
+	 */
 	private static void recordDegrees() throws FileNotFoundException
 	{	logger.increaseOffset();
 	
