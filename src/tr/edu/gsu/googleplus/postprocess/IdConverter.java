@@ -36,7 +36,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-import tr.edu.gsu.googleplus.tool.FileTools;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLogger;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
 
