@@ -1,6 +1,6 @@
 #
 # Google+ Network Extractor
-# Copyright 2011 Vincent Labatut 
+# Copyright 2011-2012 Vincent Labatut 
 #
 # This file is part of Google+ Network Extractor.
 # 
@@ -33,14 +33,15 @@ library(igraph)
 folder <- paste("/home/vlabatut/eclipse/workspaces/Extraction/Database/googleplus/")
 
 # load network
-net.file <- paste(folder,"edges.table",sep="")
+net.file <- paste(folder,"giantcomp.edges.table",sep="")
 g <- read.graph(net.file,format="edgelist")
 
 # load properties
-prop.file <- paste(folder,"properties.txt",sep="")
+prop.file <- paste(folder,"giantcomp.properties.txt",sep="")
 prop.table <- as.matrix(read.table(prop.file))
 com.file <- paste(folder,"communities.txt",sep="")
 com.table <- as.matrix(read.table(com.file))
+
 
 ##################################################
 # process degrees
@@ -61,8 +62,9 @@ for(mode in c("all","in","out"))
 }
 write.table(x=prop.table,file=prop.file)
 
+
 ##################################################
-# process communities with infomap
+# process communities
 ##################################################
 date()
 # infomap
