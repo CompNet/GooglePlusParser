@@ -46,8 +46,8 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
 /**
  * This class was supposed to be used to convert the
  * string-based DB into an integer-based one, for speed
- * and memory reasons. It was to slow, so a purely file-based
- * approach was finaly used, implemented in {@link IdConverter}.
+ * and memory reasons. It was too slow, so a purely file-based
+ * approach was finally used, implemented in {@link IdConverter}.
  *  
  * @since 1
  * @version 1

@@ -21,7 +21,6 @@
 #
 # This R script uses the igraph library v0.6 to perform various analyses
 # on the social graph.
-# Note: written for igraph v0.6+
 #
 #####################################################################################
 
@@ -29,17 +28,18 @@
 # init
 ##################################################
 library(igraph)
-#folder <- paste("/home/vlabatut/eclipse/workspaces/Extraction/GooglePlusParser/res/networks/")
 folder <- paste("/home/vlabatut/eclipse/workspaces/Extraction/Database/googleplus/")
 
 # load network
-net.file <- paste(folder,"giantcomp.edges.table",sep="")
+#prefix <- "noisolates"
+prefix <- "giantcomp"
+net.file <- paste(folder,prefix,".edgelist",sep="")
 g <- read.graph(net.file,format="edgelist")
 
 # load properties
-prop.file <- paste(folder,"giantcomp.properties.txt",sep="")
+prop.file <- paste(folder,prefix,".properties.txt",sep="")
 prop.table <- as.matrix(read.table(prop.file))
-com.file <- paste(folder,"communities.txt",sep="")
+com.file <- paste(folder,prefix,"communities.txt",sep="")
 com.table <- as.matrix(read.table(com.file))
 
 

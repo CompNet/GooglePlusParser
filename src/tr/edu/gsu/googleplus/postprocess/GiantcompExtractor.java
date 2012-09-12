@@ -44,7 +44,7 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
  * @version 1
  * @author Vincent Labatut
  */
-public class ComponentExtractor
+public class GiantcompExtractor
 {	/*** Number of Persons to be processed */
 	private static final int NODE_NBR = 31148138;
 	/*** Number of links to be processed */
@@ -67,9 +67,11 @@ public class ComponentExtractor
 		logger.increaseOffset();
 		
 		// load the list of nodes to be kept
+		logger.log("Load nodes ids");
 		loadNodeIds();
 		
 		// record the remaining relationships
+		logger.log("Retain only the appropriate links");
 		filterRelationships();
 		
 		logger.log("Done");
@@ -88,11 +90,11 @@ public class ComponentExtractor
 	/** Folder containing all files */
 	private static final String FOLDER = ".." + File.separator + "Database" + File.separator + "googleplus";
 	/** Original network file */
-	private static final String IN_NET_FILENAME = FOLDER + File.separator + "edges.table";
+	private static final String IN_NET_FILENAME = FOLDER + File.separator + "noisolates.edgelist";
 	/** Generated subnetwork file */
-	private static final String OUT_NET_FILENAME = FOLDER + File.separator + "subnetwork.edges.table";
+	private static final String OUT_NET_FILENAME = FOLDER + File.separator + "giantcomp.edgelist";
 	/** List of nodes to be kept */
-	private static final String IN_NODES_FILENAME = FOLDER + File.separator + "subcomponent.txt";
+	private static final String IN_NODES_FILENAME = FOLDER + File.separator + "giantcomp.nodes";
 	
 	/////////////////////////////////////////////////////////////////
 	// PROCESS			/////////////////////////////////////////////
@@ -146,6 +148,9 @@ public class ComponentExtractor
 	private static void filterRelationships() throws FileNotFoundException
 	{	logger.increaseOffset();
 	
+		// init processed node set, for verification
+		TreeSet<Integer> processedNodes = new TreeSet<Integer>();
+	
 		// open the output file
 		logger.log("Open the output file");
 		FileOutputStream fileOut = new FileOutputStream(OUT_NET_FILENAME);
@@ -169,7 +174,10 @@ public class ComponentExtractor
 				int id1 = Integer.parseInt(parts[0]);
 				int id2 = Integer.parseInt(parts[1]);
 				if(nodes.contains(id1) && nodes.contains(id2))
-					writer.println(id1 + "\t" + id2);
+				{	writer.println(id1 + "\t" + id2);
+					processedNodes.add(id1);
+					processedNodes.add(id2);
+				}
 				if(count%1000000 == 0)
 					logger.log("Progress: "+count+"/"+LINK_NBR);
 			}
@@ -180,6 +188,19 @@ public class ComponentExtractor
 		writer.close();
 		scanner.close();
 		logger.log("All relationships processed");
+		
+		// display the missing nodes
+		logger.log("Number of nodes actually recorded: "+processedNodes.size()+"/"+nodes.size());
+		if(nodes.size()!=processedNodes.size())
+		{	logger.log("Missing nodes:");
+			logger.increaseOffset();
+			for(int i: nodes)
+			{	if(!processedNodes.contains(i))
+					logger.log(Integer.toString(i));
+			}
+			logger.decreaseOffset();
+		}		
+		
 		logger.decreaseOffset();
 	}
 }

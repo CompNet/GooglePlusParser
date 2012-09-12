@@ -41,7 +41,7 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
 
 /**
  * This class contains methods used to convert the string-based database
- * into a more convenient int-based set of files.<br/>
+ * into a more convenient integer-based set of files.<br/>
  * 
  * -Xms16g -Xmx16g -XX:+UseConcMarkSweepGC
  * cat edges.*.table > edges.table
