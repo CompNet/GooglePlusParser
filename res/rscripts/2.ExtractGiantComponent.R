@@ -98,6 +98,5 @@ g <- read.graph(net.file,format="edgelist")
 # remove isolates
 d <- degree(graph=g,mode="all")
 g <- delete.vertices(graph=g,v=which(d<1))
-net.file2 <- paste(folder,"giantcomp2.edges.table",sep="")
-write.graph(graph=g, file=net.file2, format="edgelist")
+write.graph(graph=g, file=net.file, format="edgelist")
 

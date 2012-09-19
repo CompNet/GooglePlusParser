@@ -35,11 +35,13 @@ folder <- paste("/home/vlabatut/eclipse/workspaces/Extraction/Database/googleplu
 prefix <- "giantcomp"
 net.file <- paste(folder,prefix,".edgelist",sep="")
 g <- read.graph(net.file,format="edgelist")
+#write.graph(g,paste(net.file,".net",sep=""),format="pajek")
+
 
 # load properties
 prop.file <- paste(folder,prefix,".properties.txt",sep="")
 prop.table <- as.matrix(read.table(prop.file))
-com.file <- paste(folder,prefix,"communities.txt",sep="")
+com.file <- paste(folder,prefix,".communities.txt",sep="")
 com.table <- as.matrix(read.table(com.file))
 
 
@@ -49,7 +51,7 @@ com.table <- as.matrix(read.table(com.file))
 for(mode in c("all","in","out"))
 {	p <- degree(g,mode=mode)
 	rowname <- paste("degree.",mode,sep="")
-	write.table(x=p,file=paste(folder,rowname,".txt",sep=""),row.names=FALSE,col.names=FALSE)
+	write.table(x=p,file=paste(folder,prefix,".",rowname,".txt",sep=""),row.names=FALSE,col.names=FALSE)
 	temp <- rownames(prop.table)
 	if(length(which(temp==rowname))==0)
 	{	prop.table <- rbind(prop.table,c(mean(p),sd(p)))
@@ -68,21 +70,21 @@ write.table(x=prop.table,file=prop.file)
 ##################################################
 date()
 # infomap
-	comstruct <- infomap.community (graph=g, e.weights=NULL, v.weights=NULL, nb.trials=1, modularity=TRUE)
 	algo.name <- "infomap"
+	comstruct <- infomap.community (graph=g, e.weights=NULL, v.weights=NULL, nb.trials=1, modularity=TRUE)
 # label propagation
-	comstruct <- label.propagation.community(graph=g, weights=NULL, initial=NULL, fixed=NULL)
 	algo.name <- "labelpropagation"
+	comstruct <- label.propagation.community(graph=g, weights=NULL, initial=NULL, fixed=NULL)
 # walktrap
-	walktrap.community(graph=g, weights=NULL, steps=4, merges=FALSE, modularity=TRUE, membership=TRUE)
 	algo.name <- "walktrap"
+	walktrap.community(graph=g, weights=NULL, steps=4, merges=FALSE, modularity=TRUE, membership=TRUE)
 # louvain
-	multilevel.community(graph=g, weights=NULL)
 	algo.name <- "louvain"
+	multilevel.community(graph=g, weights=NULL)
 # fastgreedy
-	g <- as.undirected(g)	
-	comstruct <- fastgreedy.community(graph=g, merges=FALSE, modularity=TRUE, membership=TRUE, weights=NULL)
 	algo.name <- "fastgreedy"
+	g <- as.undirected(g, mode="collapse")	
+	comstruct <- fastgreedy.community(graph=g, merges=FALSE, modularity=TRUE, membership=TRUE, weights=NULL)
 
 algo.file <- paste(folder,algo.name,".clu",sep="")
 write.table(x=comstruct$membership,file=paste(folder,algo.name,".clu",sep=""),row.names=FALSE,col.names=FALSE)
@@ -96,5 +98,16 @@ if(length(which(temp==algo.name))==0)
 }
 write.table(x=com.table,file=com.file)
 
+# external Oslom
+# cd /home/vlabatut/eclipse/workspaces/Networks/CommunityDetection/algorithms/oslom/
+# ./oslom_dir -f ~/eclipse/workspaces/Extraction/Database/googleplus/giantcomp.edgelist -uw -r 1 -hr 0 -cp 0.5
 
-# ./oslom_dir -f ~/eclipse/workspaces/Extraction/Database/googleplus/edges.table -uw -r 1 -hr 0 -cp 0.5
+# external louvain
+# cd /home/vlabatut/eclipse/workspaces/Networks/CommunityDetection/algorithms/louvain/
+# ./convert.out -i ~/eclipse/workspaces/Extraction/Database/googleplus/giantcomp.edgelist -o graph.bin
+# ./community.out graph.bin -l -1 -q 0.0001 > graph.tree
+
+# external hierarchical infomap
+# cd /home/vlabatut/eclipse/workspaces/Networks/CommunityDetection/algorithms/infohiermap/directed/
+# ./infomap.out 1 ~/eclipse/workspaces/Extraction/Database/googleplus/giantcomp.net 1 1
+
