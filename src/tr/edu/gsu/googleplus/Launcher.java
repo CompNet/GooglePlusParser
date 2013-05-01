@@ -93,7 +93,7 @@ public class Launcher
 	{	// set up logger
 		logger.setName("FullExtraction");
 	
-		// oprn DB
+		// open DB
 		DbTools.setDbName("googleplus");
 		DbTools.openDb(false);
 	
