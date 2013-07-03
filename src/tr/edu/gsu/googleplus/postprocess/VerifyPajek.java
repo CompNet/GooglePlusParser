@@ -27,9 +27,21 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-
+/**
+ * 
+ * @author Vincent
+ *
+ */
 public class VerifyPajek
-{	public static void main(String[] args) throws FileNotFoundException
+{	
+	/**
+	 * 
+	 * @param args
+	 * 		Not used.
+	 * @throws FileNotFoundException
+	 * 		Pb.
+	 */
+	public static void main(String[] args) throws FileNotFoundException
 	{	// 30 871 965
 		
 		// open the input file
