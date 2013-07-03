@@ -55,12 +55,19 @@ public class LogTest
 	 * 
 	 * @param arg
 	 * 		Not used.
+	 * 
 	 * @throws UniformInterfaceException
+	 * 		Pb.
 	 * @throws URISyntaxException
+	 * 		Pb.
 	 * @throws InterruptedException
+	 * 		Pb.
 	 * @throws JSONException
+	 * 		Pb.
 	 * @throws IOException 
+	 * 		Pb.
 	 * @throws SecurityException 
+	 * 		Pb.
 	 */
 	public static void main(String arg[]) throws UniformInterfaceException, URISyntaxException, InterruptedException, JSONException, SecurityException, IOException
 	{	logger.setName("LogTest");

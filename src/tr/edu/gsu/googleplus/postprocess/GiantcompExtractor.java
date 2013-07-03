@@ -28,8 +28,8 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLogger;
 import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
@@ -44,7 +44,7 @@ import tr.edu.gsu.googleplus.tool.log.HierarchicalLoggerManager;
  * @version 1
  * @author Vincent Labatut
  */
-public class EdgelistSimplifier
+public class GiantcompExtractor
 {	/*** Number of Persons to be processed */
 	private static final int NODE_NBR = 31148138;
 	/*** Number of links to be processed */
@@ -61,16 +61,17 @@ public class EdgelistSimplifier
 	 */
 	public static void main(String[] args) throws FileNotFoundException
 	{	// init log
-		logger.setName("Conversion");
+		logger.setName("Subgraph extraction");
 		
-		logger.log("Remove the leaves (node with a degree smaller or equal to 1)");
+		logger.log("Keep only the nodes specified in the subgraph.nodes file");
 		logger.increaseOffset();
 		
-		// process the degrees
-		processDegrees();
-		// record the degrees
-		recordDegrees();
+		// load the list of nodes to be kept
+		logger.log("Load nodes ids");
+		loadNodeIds();
+		
 		// record the remaining relationships
+		logger.log("Retain only the appropriate links");
 		filterRelationships();
 		
 		logger.log("Done");
@@ -88,66 +89,58 @@ public class EdgelistSimplifier
 	/////////////////////////////////////////////////////////////////
 	/** Folder containing all files */
 	private static final String FOLDER = ".." + File.separator + "Database" + File.separator + "googleplus";
-	/** Stem of the files containing the transformed relationships */
-	private static final String FILE_NAME = FOLDER + File.separator + "edges";
-	/** Extension of the files containing the transformed relationships */
-	private static final String FILE_EXT = ".table";
+	/** Original network file */
+	private static final String IN_NET_FILENAME = FOLDER + File.separator + "noisolates.edgelist";
+	/** Generated subnetwork file */
+	private static final String OUT_NET_FILENAME = FOLDER + File.separator + "giantcomp.edgelist";
+	/** List of nodes to be kept */
+	private static final String IN_NODES_FILENAME = FOLDER + File.separator + "giantcomp.nodes";
 	
 	/////////////////////////////////////////////////////////////////
 	// PROCESS			/////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////
-	/** The degrees of the network nodes */
-	private static int degrees[] = new int[NODE_NBR];
+	/** The list of nodes to be kept */
+	private static TreeSet<Integer> nodes = new TreeSet<Integer>();
 	
 	/**
-	 * Parse the file to get the degree
-	 * of each node.
+	 * Load the file to get the nodes.
 	 * 
 	 * @throws FileNotFoundException
 	 * 		Problem while accessing the input file.
 	 */
-	private static void processDegrees() throws FileNotFoundException
+	private static void loadNodeIds() throws FileNotFoundException
 	{	logger.increaseOffset();
-		
-		// init data struct
-		Arrays.fill(degrees,0);
 		
 		// open the input file
 		logger.log("Open the input file");
-		String filename = FILE_NAME + FILE_EXT;
-		FileInputStream file = new FileInputStream(filename);
+		FileInputStream file = new FileInputStream(IN_NODES_FILENAME);
 		InputStreamReader reader = new InputStreamReader(file);
 		Scanner scanner = new Scanner(reader);
 		
-		// read and counts number of appearances
-		logger.log("Calculate the degrees");
+		// populate the set
+		logger.log("Retrieve the node list");
 		logger.increaseOffset();
 		int count = 0;
 		while(scanner.hasNextLine())
 		{	count++;
 			String line = scanner.nextLine();
 			if(!line.isEmpty())
-			{	String parts[] = line.split("\\t");
-				int id1 = Integer.parseInt(parts[0]);
-				int id2 = Integer.parseInt(parts[1]);
-//System.out.println(line);				
-				degrees[id1]++;
-				degrees[id2]++;
+			{	int id = Integer.parseInt(line);
+				nodes.add(id);
 				if(count%1000000 == 0)
-					logger.log("Progress: "+count+"/"+LINK_NBR);
+					logger.log("Progress: "+count+"/"+NODE_NBR+" (max)");
 			}
 		}
 		logger.decreaseOffset();
 		
 		scanner.close();
-		logger.log("All ids processed, the structure is ready");
+		logger.log("All ids processed, the node list is ready");
 		logger.decreaseOffset();
 	}
 	
 	/**
-	 * Parse the network file another time,
-	 * this time copying only the links involving
-	 * both selected nodes (no leaves).
+	 * Parse the network file, copying only the links involving
+	 * both selected nodes.
 	 * 
 	 * @throws FileNotFoundException
 	 * 		Problem while accessing the input and/or output files.
@@ -155,17 +148,18 @@ public class EdgelistSimplifier
 	private static void filterRelationships() throws FileNotFoundException
 	{	logger.increaseOffset();
 	
+		// init processed node set, for verification
+		TreeSet<Integer> processedNodes = new TreeSet<Integer>();
+	
 		// open the output file
 		logger.log("Open the output file");
-		String outPath = FILE_NAME + ".noleave" + FILE_EXT;
-		FileOutputStream fileOut = new FileOutputStream(outPath);
+		FileOutputStream fileOut = new FileOutputStream(OUT_NET_FILENAME);
 		OutputStreamWriter osw = new OutputStreamWriter(fileOut);
 		PrintWriter writer = new PrintWriter(osw);
 		
 		// open the input file
 		logger.log("Open the input file");
-		String filename = FILE_NAME + FILE_EXT;
-		FileInputStream file = new FileInputStream(filename);
+		FileInputStream file = new FileInputStream(IN_NET_FILENAME);
 		InputStreamReader reader = new InputStreamReader(file);
 		Scanner scanner = new Scanner(reader);
 		
@@ -179,8 +173,11 @@ public class EdgelistSimplifier
 			{	String parts[] = line.split("\\t");
 				int id1 = Integer.parseInt(parts[0]);
 				int id2 = Integer.parseInt(parts[1]);
-				if(degrees[id1]>1 && degrees[id2]>1)
-					writer.println(id1 + "\t" + id2);
+				if(nodes.contains(id1) && nodes.contains(id2))
+				{	writer.println(id1 + "\t" + id2);
+					processedNodes.add(id1);
+					processedNodes.add(id2);
+				}
 				if(count%1000000 == 0)
 					logger.log("Progress: "+count+"/"+LINK_NBR);
 			}
@@ -191,37 +188,19 @@ public class EdgelistSimplifier
 		writer.close();
 		scanner.close();
 		logger.log("All relationships processed");
-		logger.decreaseOffset();
-	}
-	
-	/**
-	 * Record the degrees in a separate file
-	 * 
-	 * @throws FileNotFoundException
-	 * 		Problem while accessing the output file.
-	 */
-	private static void recordDegrees() throws FileNotFoundException
-	{	logger.increaseOffset();
-	
-		// open the output file
-		logger.log("Open the output file");
-		String outPath = FOLDER + File.separator + "degree.txt";
-		FileOutputStream fileOut = new FileOutputStream(outPath);
-		OutputStreamWriter osw = new OutputStreamWriter(fileOut);
-		PrintWriter writer = new PrintWriter(osw);
 		
-		// record only the appropriate relationships 
-		logger.increaseOffset();
-		for(int count=0;count<degrees.length;count++)
-		{	writer.println(degrees[count]);
-			if(count%1000000 == 0)
-				logger.log("Progress: "+count+"/"+NODE_NBR);
-		}
-		logger.decreaseOffset();
+		// display the missing nodes
+		logger.log("Number of nodes actually recorded: "+processedNodes.size()+"/"+nodes.size());
+		if(nodes.size()!=processedNodes.size())
+		{	logger.log("Missing nodes:");
+			logger.increaseOffset();
+			for(int i: nodes)
+			{	if(!processedNodes.contains(i))
+					logger.log(Integer.toString(i));
+			}
+			logger.decreaseOffset();
+		}		
 		
-		// close the file
-		writer.close();
-		logger.log("All relationships processed");
 		logger.decreaseOffset();
 	}
 }
